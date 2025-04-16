@@ -1,0 +1,29 @@
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] private Rigidbody rb;                               //ref for the rb 
+    [SerializeField] private float jumpForce;                            //the force of our jump
+    [SerializeField] private float gravityModifer;                       //modify the gravity
+    [SerializeField] private bool isOnGround = true;                     //variable to check if we on the ground
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();                                  //get the rb component 
+        Physics.gravity *= gravityModifer;                               //modify our gravity 
+        
+    }
+
+    private void Update()
+    {
+        //Player Jump Input
+        if (Input.GetKeyDown(KeyCode.Space)&& isOnGround) 
+        {
+            rb.AddForce(Vector3.up * jumpForce ,ForceMode.Impulse);       //we jump up
+            isOnGround = false;                                           //we not on ground so we cant jump in air
+        }
+    }
+
+    //check if we touching ground
+    private void OnCollisionEnter(Collision collision)
+    {
+        isOnGround = true;                                                //we can now jump again
+    }
+}
