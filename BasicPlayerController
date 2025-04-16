@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce;                            //the force of our jump
     [SerializeField] private float gravityModifer;                       //modify the gravity
     [SerializeField] private bool isOnGround = true;                     //variable to check if we on the ground
+     public  bool isGameOver = false;                                    //variable to check if the game is over
     private void Start()
     {
         rb = GetComponent<Rigidbody>();                                  //get the rb component 
@@ -24,6 +25,16 @@ public class PlayerController : MonoBehaviour
     //check if we touching ground
     private void OnCollisionEnter(Collision collision)
     {
-        isOnGround = true;                                                //we can now jump again
+                                                      
+        if (collision.gameObject.CompareTag("Ground")) 
+        {
+            isOnGround = true;                                             //we can now jump again
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            isGameOver = true;                                              // game over is true we lose
+            Debug.Log("Game Over!");                                        //display messgae its game over
+        }
     }
 }
+
