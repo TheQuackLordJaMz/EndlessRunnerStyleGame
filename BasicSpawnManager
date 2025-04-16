@@ -3,8 +3,8 @@ public class SpawnManagement : MonoBehaviour
 
     public GameObject obj;                                                          //ref the obj we will be spawning
     private Vector3 spawnPos = new Vector3 (20f,0f,0f);                             //start spawn pos of obj we will spawn
-
-   [SerializeField] private float spawnDelay = 2;                                   //time before spawn
+    private PlayerController pc; //ref the PlayerController
+    [SerializeField] private float spawnDelay = 2;                                   //time before spawn
    [SerializeField] private float spawnRate  = 2;                                   //how frequently we spawn obj
 
 
@@ -12,6 +12,7 @@ public class SpawnManagement : MonoBehaviour
     void Start()
     {
         InvokeRepeating("SpawnObj", spawnDelay, spawnRate);                         //call the spawnObj function and wait for spawnDelay to spawn obj at our set spawn rate
+        pc = GameObject.Find("Player").GetComponent<PlayerController>();            //get the component Player
     }
 
     
@@ -22,6 +23,10 @@ public class SpawnManagement : MonoBehaviour
 
     void SpawnObj() 
     {
-        Instantiate(obj, spawnPos, obj.transform.rotation);                         //create the obj
+        
+        if (pc.isGameOver == false)
+        {
+            Instantiate(obj, spawnPos, obj.transform.rotation);                         //create the obj
+        }
     }
 }
