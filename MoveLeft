@@ -3,17 +3,25 @@ public class MoveLeft : MonoBehaviour
 
    // [SerializeField] private Rigidbody rb;
     [SerializeField] private float speed;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private PlayerController pc;                     //variable for the the PlayerController script
+    private float leftBound = -15;                   //variable for our out of bounds
     void Start()
     {
-       // rb = GetComponent<Rigidbody>();
-
+        
+        pc = GameObject.Find("Player").GetComponent<PlayerController>(); //get the component Player
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.left * Time.deltaTime * speed); //move left
+        
+        if (pc.isGameOver == false) 
+        {
+            transform.Translate(Vector3.left * Time.deltaTime * speed); //move left
+            if(transform.position.x < leftBound && gameObject.CompareTag("Obstacle")) //if we go off screen we get destroyed
+                    {
+                Destroy(gameObject); //destroy the obj
+            }
+        }
     }
 }
