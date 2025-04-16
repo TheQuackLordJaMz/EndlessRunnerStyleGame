@@ -1,0 +1,24 @@
+public class RepeatBG : MonoBehaviour
+{
+    //given the illusion of bg moving endlessly
+    //hide that we are repeating the bg image given the illsion seemlessly
+
+    private Vector3 startPos;                                                       //the objects starting pos
+
+    [SerializeField]private float repeatWidth;                                      //get the width of our box collider
+
+    void Start()
+    {
+        startPos = transform.position;                                              // the position we are is the position we will spawn in at
+        repeatWidth = GetComponent<BoxCollider>().size.x / 2;                       //get the width component ,divide it by 2 or in half
+    }
+
+  
+    void Update()
+    {
+        if (transform.position.x < startPos.x - repeatWidth)                        //if bg goe off screen
+        {
+            transform.position = startPos;                                          //reset pos 
+           }
+    }
+}
