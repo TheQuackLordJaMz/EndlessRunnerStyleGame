@@ -1,0 +1,44 @@
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] private Rigidbody rb;                               //ref for the rb 
+    [SerializeField] private float jumpForce;                            //the force of our jump
+    [SerializeField] private float gravityModifer;                       //modify the gravity
+    [SerializeField] private bool isOnGround = true;                     //variable to check if we on the ground
+     public  bool isGameOver = false;                                    //variable to check if the game is over
+    [SerializeField] private Animator playerAnim;                        //variable for out animations
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();                                  //get the rb component 
+        Physics.gravity *= gravityModifer;                               //modify our gravity 
+        
+    }
+
+    private void Update()
+    {
+        //Player Jump Input
+        if (Input.GetKeyDown(KeyCode.Space)&& isOnGround && !isGameOver)  //we press jump button do the below and if the game is not over
+        {
+            rb.AddForce(Vector3.up * jumpForce ,ForceMode.Impulse);       //we jump up
+            isOnGround = false;                                           //we not on ground so we cant jump in air
+            playerAnim.SetTrigger("Jump_trig");                           //play the jump animation after we press jump button
+        }
+    }
+
+    //check if we touching ground
+    private void OnCollisionEnter(Collision collision)
+    {
+                                                      
+        if (collision.gameObject.CompareTag("Ground")) 
+        {
+            isOnGround = true;                                             //we can now jump again
+        }
+        else if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            isGameOver = true;                                              // game over is true we lose
+            playerAnim.SetBool("Death_b",true);                             //player our death animation
+            playerAnim.SetInteger("DeathType_int", 1);                      //set a death anim type
+            Debug.Log("Game Over!");                                        //display messgae its game over
+        }
+    }
+}
